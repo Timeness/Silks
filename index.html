@@ -3,49 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Popup Example</title>
+  <title>App Install Prompt</title>
   <style>
     /* Style for the popup */
-    #popup {
+    #installPopup {
       display: none;
       position: fixed;
-      top: 50%;
+      bottom: 10px;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%);
       background-color: #fff;
       padding: 20px;
       border: 1px solid #ccc;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       z-index: 9999;
+      border-radius: 8px;
+      text-align: center;
     }
-    #popup button {
+    #installPopup button {
       background-color: #007BFF;
       color: white;
       border: none;
       padding: 10px 20px;
       cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
     }
-    #popup button:hover {
+    #installPopup button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div id="popup">
-    <p>This is a popup message!</p>
-    <button onclick="closePopup()">Close</button>
+
+  <div id="installPopup">
+    <p>Add this app to your home screen for easy access!</p>
+    <button id="installBtn">Add to Home Screen</button>
   </div>
 
   <script>
-    // Show the popup when the page loads
-    window.onload = function() {
-      document.getElementById("popup").style.display = "block";
-    };
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the default mini-infobar or installation prompt
+      e.preventDefault();
+      deferredPrompt = e;
 
-    // Function to close the popup
-    function closePopup() {
-      document.getElementById("popup").style.display = "none";
-    }
+      // Show the custom install popup
+      document.getElementById('installPopup').style.display = 'block';
+    });
+
+    // Install the app
+    document.getElementById('installBtn').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
   </script>
+
 </body>
 </html>
