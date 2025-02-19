@@ -1,7 +1,7 @@
 let map = L.map('map').setView([20.5937, 78.9629], 5);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 let marker;
-const socket = new WebSocket("wss://your-vercel-deployment-url/ws");
+const socket = new WebSocket("wss://cryberLabs.vercel.app/ws");
 
 document.getElementById("shareLocation").addEventListener("click", () => {
     if (navigator.geolocation) {
