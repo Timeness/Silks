@@ -1,0 +1,8 @@
+{
+    "name": "bsxLabs",
+    "version": "1.0.0",
+    "main": "api/server.js",
+    "dependencies": {
+        "ws": "^8.13.0"
+    }
+}
